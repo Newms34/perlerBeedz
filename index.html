@@ -78,7 +78,7 @@
                     <div class="column is-full" ng-show='imgLoaded && pegsDone'>
                         <div class="is-size-5">6. Your board:</div>
                         <div class="is-fullwidth peg-row" ng-repeat='crow in chunks'>
-                            <div ng-repeat='cb in crow' class='peg' style='border-color:rgb({{cb.picked.toString()}});'>&nbsp;</div>
+                            <div ng-repeat='cb in crow' class='peg' title='{{cb.picked.name}}' style='border-color:rgb({{cb.picked.rgb.toString()}});width:{{ppWid*2/3}}px;height:{{ppWid*2/3}}px;border-width:{{ppWid/3}}px;'>&nbsp;</div>
                         </div>
                     </div>
                 </div>

@@ -69,7 +69,7 @@ var app = angular.module('beadApp', []).controller('bead-cont', function($scope,
         let currYRow = 0;
         let tooMany = 500;
         console.log('pixels per chunk', pxPer, 'board size (pxls)', $scope.board, 'im size', $scope.im)
-        while (currPx.y < $scope.im.h - pxPer.h && tooMany) {
+        while (currPx.y < $scope.im.h - pxPer.h) {
             let i = 0,
                 j = 0,
                 avg = [
@@ -96,7 +96,7 @@ var app = angular.module('beadApp', []).controller('bead-cont', function($scope,
             let rawCol = avg.map(avgc => avgc.reduce((a, b) => a + b) / avgc.length);
             $scope.chunks[currYRow].push({
                 raw: avg.map(avgc => avgc.reduce((a, b) => a + b) / avgc.length),
-                picked: $scope.findNearestColor(rawCol).rgb
+                picked: $scope.findNearestColor(rawCol)
             })
         }
         $scope.pegsDone = true;
