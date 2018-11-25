@@ -1,0 +1,93 @@
+<html>
+
+<head>
+    <title>Perler Bead Image Maker</title>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.2/css/bulma.min.css">
+    <link rel="stylesheet" type="text/css" href="./css/style.css">
+</head>
+
+<body ng-app='beadApp' ng-controller='bead-cont' ng-cloak>
+    <div class="columns">
+        <div class="column is-one-fifth"></div>
+        <div class="column is-three-fifths panel">
+            <div class="panel-heading has-background-link has-text-white has-text-centered has-text-weight-bold">Perler Bead Image Maker</div>
+            <div class="panel-block blocky">
+                <div class='level is-fullwidth columns is-multiline'>
+                    <div class="column is-full">
+                        <div class='is-size-5'>1. Pick an Image</div>
+                        <hr>
+                        <input class='button is-success' type="file" id='myFile' ng-model='theFiles' onchange="angular.element(document.querySelector('#myFile')).scope().loadImg()">
+                        <br><br><br>
+                        <canvas width="0" height="0"></canvas>
+                    </div>
+                    <div class='column is-full' id='imgStats' ng-show='imgLoaded'>
+                        <div class='is-size-5'>2. Your image info:</div>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Width</th>
+                                    <th>Height</th>
+                                    <th>Number of Colors</th>
+                                    <th>Most Common Color</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>{{im.w}}</td>
+                                    <td>{{im.h}}</td>
+                                    <td>{{im.cols.length}}</td>
+                                    <td style='background: rgb({{im.cols[0].rgb}})'>&nbsp;</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="column is-full" ng-show='imgLoaded'>
+                        <div class="is-size-5">3. Pick some colors:</div>
+                        <i>Scroll down after you're done!</i><br>
+                        <i>We've picked the most likely for you</i><br><button class="button is-info" title='Pick a generic set of ROYGBV colors' ng-click='setRainbow();'>🌈&nbsp;Pick Rainbow</button>
+                        <button class="button is-link" title='Let us pick the most likely 5 colors for you' ng-click='pickMostLikely();'>⚙&nbsp;Pick most likely</button>
+                        <button class="button is-link" title='Use ALL the colors!' ng-click='pickAll();'>✓&nbsp;Pick all</button>
+                        <button class="button is-link" title='Useful if you wanna reset all the colors' ng-click='resetAllColsToInact();'>☓&nbsp;Pick none</button>
+                        <div class="columns is-fullwidth is-multiline">
+                            <div class="column is-full"></div>
+                            <div class="column is-one-fifth" ng-repeat='c in allColOpts|orderBy:"active":true' style='background:rgb({{c.rgb.toString()}});' ng-class="{'active-border':c.active}">
+                                <label class="has-background-grey-lighter has-text-centered pokey" style='padding:2px;'>
+                                    <input type="checkbox" ng-model="c.active">
+                                    {{c.name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-full" ng-show='imgLoaded'>
+                        <div class="is-size-5">4. Tell us your board size</div>
+                        <br><br>
+                        <div class="is-fullwidth columns is-multiline">
+                            <div class="column is-two-fifths notification">Board Height</div>
+                            <div class="column is-three-fifths">
+                                <input class="number" ng-model='board.h'></input> pegs
+                            </div>
+                            <div class="column is-two-fifths notification">Board Width</div>
+                            <div class="column is-three-fifths">
+                                <input class="number" ng-model='board.w'></input> pegs
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column is-full" ng-show='imgLoaded'>
+                        <div class="is-size-5">5. Get pegs!</div>
+                        <button class="button is-success is-large" ng-click='doPegs()'>DO IT!</button>
+                    </div>
+                    <div class="column is-full" ng-show='imgLoaded && pegsDone'>
+                        <div class="is-size-5">6. Your board:</div>
+                        <div class="is-fullwidth peg-row" ng-repeat='crow in chunks'>
+                            <div ng-repeat='cb in crow' class='peg' style='border-color:rgb({{cb.picked.toString()}});'>&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.8/angular.min.js"></script>
+    <script src="./js/colors.js"></script>
+    <script src="./js/main.js"></script>
+</body>
+
+</html>
